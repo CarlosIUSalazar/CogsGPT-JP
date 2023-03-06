@@ -46,7 +46,7 @@ def submit_form():
 
 
     # Construct the mytext variable based on the form data
-    mytext = f"Prepare some lifestyle advice for the prevention of dementia IN JAPANESE, for a person with the following characteristics: {patient_height}cm tall weights {weight}kg and is a {age}-year-old {gender}. This person hippocampus volume is {hippocampus} cubic mm. This person took the following lifestyle and medical history questionnaire and next to each question is the answer obtained. Your essay please separate it into はじめに, 運動, 睡眠, 食事, コミュニケーション, アルコール, 趣味, メンタルヘルス and 結論 sections. Give your answer fully in formal Japanese language"
+    mytext = f"Prepare some lifestyle advice for the prevention of dementia IN JAPANESE, for a person with the following characteristics: {patient_height}cm tall weights {weight}kg and is a {age}-year-old {gender}. This person hippocampus volume is {hippocampus} cubic mm. This person took the following lifestyle and medical history questionnaire and next to each question is the answer obtained. Your essay please separate it into 'はじめに,', '運動:', '睡眠:', '食事:', 'コミュニケーション:', 'アルコール', '趣味:', 'メンタルヘルス:' and '結論:' sections. Give your answer fully in formal Japanese language"
     mytext += f"\nPhysical Activity:\nQ: How much do you walk everyday? A:{walk}."
     mytext += f"\nQ: In a week how many times you exercise more than 30 minutes? A:{exercise}."
     mytext += f"\nDiet:\nQ: Everyday how many portions of fruits and vegetables do you eat? A:{fruits_veggies}."
