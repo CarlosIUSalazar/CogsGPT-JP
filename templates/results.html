@@ -65,7 +65,7 @@
 					<br><h2>{{ line }}</h2>
 				{% elif line.startswith('結論:') %}
 					<br><h2>{{ line }}</h2>
-					{% if line.startswith('はじめに') %}
+				{% elif line.startswith('はじめに') %}
 					<br><h2>{{ line }}</h2>
 				{% elif line.startswith('運動') %}
 					<br><h2>{{ line }}</h2>
