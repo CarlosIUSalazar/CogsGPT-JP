@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CogsGPT</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>CogsGPT あなたの生活習慣など</h1>
+    <form action="/submit" method="POST" onsubmit="showLoadingSpinner()">
+        <label for="height">あなたの身長を教えてください。 (cm):</label>
+        <input type="number" id="height" name="height" required><br>
+        
+        <label for="weight">あなたの体重を教えてください。 (kg):</label>
+        <input type="number" id="weight" name="weight" required><br>
+    
+        <label for="age">あなたの年齢を教えてください。</label>
+        <input type="number" id="age" name="age" required><br>
+    
+        <label for="hippocampus">あなたの海馬体積を教えてください。(mm3):</label>
+        <input type="number" id="hippocampus" name="hippocampus" required><br>
+    
+        <p>性別:</p>
+        <label><input type="radio" name="gender" value="male" required>男性</label><br>
+        <label><input type="radio" name="gender" value="female" required>女性</label><br>
+    
+        <p>毎日どのくらい歩いていますか？</p>
+        <label><input type="radio" name="walk" value="Less than 15 mins" required>15分未満</label><br>
+        <label><input type="radio" name="walk" value="Between 15-30 mins" required>15-30分</label><br>
+        <label><input type="radio" name="walk" value="Between 30-45 mins" required>30-45分</label><br>
+        <label><input type="radio" name="walk" value="Between 45-60 mins" required>45-60分</label><br>
+        <label><input type="radio" name="walk" value="More than 60 mins" required>60分以上</label><br>
+
+        <p>1週間のうち30分以上息が上がる運動を何日していますか？</p>
+        <label><input type="radio" name="exercise" value="less than 1 day" required>1日未満</label><br>
+        <label><input type="radio" name="exercise" value="1 day" required>1日</label><br>
+        <label><input type="radio" name="exercise" value="2 days" required>2日</label><br>
+        <label><input type="radio" name="exercise" value="3 days" required>3日</label><br>
+        <label><input type="radio" name="exercise" value="4 days or more" required>4日以上</label><br>
+
+        <p>毎日野菜またはフルーツを小鉢何皿食べていますか？</p>
+        <label><input type="radio" name="fruits_veggies" value="less than 1" required>1皿以下</label><br>
+        <label><input type="radio" name="fruits_veggies" value="2 portions" required>2皿</label><br>
+        <label><input type="radio" name="fruits_veggies" value="3 portions" required>3皿</label><br>
+        <label><input type="radio" name="fruits_veggies" value="4 portions" required>4皿</label><br>
+        <label><input type="radio" name="fruits_veggies" value="5 or more portions required">5皿以上</label><br>
+
+        <p>1週間のうち魚介類を魚の切り身を何枚分食べていますか？</p>
+        <label><input type="radio" name="fish" value="less than 1 portion per week">週1枚未満</label><br>
+        <label><input type="radio" name="fish" value="1 portion" required>1枚</label><br>
+        <label><input type="radio" name="fish" value="2 portions" required>2枚</label><br>
+        <label><input type="radio" name="fish" value="3 portions" required>3枚</label><br>
+        <label><input type="radio" name="fish" value="4 portions" required>4枚以上</label><br>
+
+        <p>過去1ヶ月間において、ご自分の睡眠の質を全体として、どのように評価しますか？</p>
+        <label><input type="radio" name="sleep" value="extremely good" required>非常に良い</label><br>
+        <label><input type="radio" name="sleep" value="normal" required>どちらかといえば良い</label><br>
+        <label><input type="radio" name="sleep" value="bad" required>どちらかといえば悪い</label><br>
+        <label><input type="radio" name="sleep" value="very bad" required>非常に悪い</label><br>
+        
+        <p>睡眠で以下に当てはまるものを選んでください </p>
+        <label><input type="checkbox" name="sleep_reason[]" value="I snore louder than my speaking voice" >話し声よりも大きないびき</label><br>
+        <label><input type="checkbox" name="sleep_reason[]" value="fatigue and daytime sleepiness" >疲労や倦怠感および日中の眠気</label><br>
+        <label><input type="checkbox" name="sleep_reason[]" value="Shortness of breath during sleep" >睡眠中に息が止まる</label><br>
+        <label><input type="checkbox" name="sleep_reason[]" id="none-checkbox" value="none of the above" >特になし</label><br>
+        <script>
+        const noneCheckbox = document.getElementById("none-checkbox");
+        const otherCheckboxes = document.querySelectorAll('input[name="sleep_reason[]"]:not(#none-checkbox)');
+        
+        noneCheckbox.addEventListener("change", function() {
+            if (this.checked) {
+                // If "none of the above" is checked, uncheck all other options
+                otherCheckboxes.forEach(function(el) {
+                    el.checked = false;
+                });
+            } else {
+                // If "none of the above" is unchecked, check if any other options are checked
+                const anyOtherChecked = Array.from(otherCheckboxes).some(function(el) {
+                    return el.checked;
+                });
+                if (anyOtherChecked) {
+                    // If at least one other option is checked, leave "none of the above" unchecked
+                    return;
+                } else {
+                    // If no other options are checked, check "none of the above"
+                    this.checked = true;
+                }
+            }
+        });
+        
+        otherCheckboxes.forEach(function(el) {
+            el.addEventListener("change", function() {
+                // If any other option is checked, uncheck "none of the above"
+                noneCheckbox.checked = false;
+            });
+        });
+        </script>
+        
+        <p>高血圧症と言われたことはありますか？または、高血圧症の治療中ですか？</p>
+        <label><input type="radio" name="hypertension" value="yes" required>はい</label><br>
+        <label><input type="radio" name="hypertension" value="no" required>いいえ</label><br>
+
+        <p>糖尿病と言われたことはありますか？または、糖尿病の治療中ですか？</p>
+        <label><input type="radio" name="diabetes" value="yes" required>はい</label><br>
+        <label><input type="radio" name="diabetes" value="no" required>いいえ</label><br>
+
+        <p>あなたはたばこを吸いますか？</p>
+        <label><input type="radio" name="smoking" value="yes" required>はい</label><br>
+        <label><input type="radio" name="smoking" value="no" required>いいえ</label><br>
+
+        <p>あなたは1日あたりどのくらいのお酒の量を飲みますか？</p>
+        <label><input type="radio" name="alcohol" value="don't drink at all" required>全く飲まない</label><br>
+        <label><input type="radio" name="alcohol" value="less than half a cup" required>0.5合未満</label><br>
+        <label><input type="radio" name="alcohol" value="between half and 1 cups" required>0.5合以上1合未満</label><br>
+        <label><input type="radio" name="alcohol" value="between 1 and 2 cups" required>1合以上2合未満</label><br>
+        <label><input type="radio" name="alcohol" value="2 or more cups" required>2合以上</label><br>
+
+        <p>過去30日間についてお尋ねします。神経過敏に感じましたか</p>
+        <label><input type="radio" name="nervous" value="Not at all" required>まったくない</label><br>
+        <label><input type="radio" name="nervous" value="Just a little" required>少しだけ</label><br>
+        <label><input type="radio" name="nervous" value="Sometimes" required>ときどき</label><br>
+        <label><input type="radio" name="nervous" value="Generally" required>たいてい</label><br>
+        <label><input type="radio" name="nervous" value="Everytime" required>いつも</label><br>
+
+        <p>過去30日間についてお尋ねします。絶望的だと感じましたか</p>
+        <label><input type="radio" name="hopeless" value="Not at all" required>まったくない</label><br>
+        <label><input type="radio" name="hopeless" value="Just a little" required>少しだけ</label><br>
+        <label><input type="radio" name="hopeless" value="Sometimes" required>ときどき</label><br>
+        <label><input type="radio" name="hopeless" value="Generally" required>たいてい</label><br>
+        <label><input type="radio" name="hopeless" value="Everytime" required>いつも</label><br>
+
+        <p>過去30日間についてお尋ねします。そわそわ、落ち着か なく感じましたか</p>
+        <label><input type="radio" name="restless" value="Not at all" required>まったくない</label><br>
+        <label><input type="radio" name="restless" value="Just a little" required>少しだけ</label><br>
+        <label><input type="radio" name="restless" value="Sometimes" required>ときどき</label><br>
+        <label><input type="radio" name="restless" value="Generally" required>たいてい</label><br>
+        <label><input type="radio" name="restless" value="Everytime" required>いつも</label><br>
+
+        <p>過去30日間についてお尋ねします。気分が沈み込んで、何が起こっても気が晴れないように感じましたか</p>
+        <label><input type="radio" name="depressed" value="Not at all" required>まったくない</label><br>
+        <label><input type="radio" name="depressed" value="Just a little" required>少しだけ</label><br>
+        <label><input type="radio" name="depressed" value="Sometimes" required>ときどき</label><br>
+        <label><input type="radio" name="depressed" value="Generally" required>たいてい</label><br>
+        <label><input type="radio" name="depressed" value="Everytime" required>いつも</label><br>
+
+        <p>過去30日間についてお尋ねします。何をするのも骨折りだと感じましたか</p>
+        <label><input type="radio" name="foolish" value="Not at all" required>まったくない</label><br>
+        <label><input type="radio" name="foolish" value="Just a little" required>少しだけ</label><br>
+        <label><input type="radio" name="foolish" value="Sometimes" required>ときどき</label><br>
+        <label><input type="radio" name="foolish" value="Generally" required>たいてい</label><br>
+        <label><input type="radio" name="foolish" value="Everytime" required>いつも</label><br>
+
+        <p>過去30日間についてお尋ねします。自分は価値のない人間 だと感じましたか</p>
+        <label><input type="radio" name="worthless" value="Not at all" required>まったくない</label><br>
+        <label><input type="radio" name="worthless" value="Just a little" required>少しだけ</label><br>
+        <label><input type="radio" name="worthless" value="Sometimes" required>ときどき</label><br>
+        <label><input type="radio" name="worthless" value="Generally" required>たいてい</label><br>
+        <label><input type="radio" name="worthless" value="Everytime" required>いつも</label><br>
+
+        <!-- Add a div with a unique ID to show the loading spinner -->
+        <div id="loading-spinner" class="hidden">
+            <div class="spinner"></div>
+        </div>
+
+        <input type="submit" value="送信">
+    </form>
+    <script>
+        function showLoadingSpinner() {
+            // Show the loading spinner when the form is submitted
+            document.getElementById("loading-spinner").classList.remove("hidden");
+        }
+    </script>
+</body>
+</html>
