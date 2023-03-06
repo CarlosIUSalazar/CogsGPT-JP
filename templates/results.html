@@ -65,6 +65,24 @@
 					<br><h2>{{ line }}</h2>
 				{% elif line.startswith('結論:') %}
 					<br><h2>{{ line }}</h2>
+					{% if line.startswith('はじめに') %}
+					<br><h2>{{ line }}</h2>
+				{% elif line.startswith('運動') %}
+					<br><h2>{{ line }}</h2>
+				{% elif line.startswith('食事') %}
+					<br><h2>{{ line }}</h2>
+				{% elif line.startswith('睡眠') %}
+					<br><h2>{{ line }}</h2>
+				{% elif line.startswith('コミュニケーション') %}
+					<br><h2>{{ line }}</h2>
+				{% elif line.startswith('趣味') %}
+					<br><h2>{{ line }}</h2>
+				{% elif line.startswith('アルコール') %}
+					<br><h2>{{ line }}</h2>
+				{% elif line.startswith('メンタルヘルス') %}
+					<br><h2>{{ line }}</h2>
+				{% elif line.startswith('結論') %}
+					<br><h2>{{ line }}</h2>
 				{% else %}
 					<p>{{ line }}</p>
 				{% endif %}
