@@ -10,7 +10,7 @@ app = Flask(__name__)
 load_dotenv()
 #openai_organization = os.getenv('OPENAI_ORGANIZATION') This one is not necessary for this App
 openai_api_key = os.getenv('OPENAI_API_KEY')
-model_id = 'gpt-3.5-turbo'
+#model_id = 'gpt-3.5-turbo'
 
 # Define the Flask route that displays the form
 @app.route('/')
@@ -74,7 +74,7 @@ def submit_form():
     # Call the OpenAI API
     URL = "https://api.openai.com/v1/chat/completions"
     payload = {
-        "model": "gpt-3.5-turbo",
+        "model": "gpt-4",
         "messages": [{"role": "user", "content": mytext}],
         "temperature" : 1.0,
         "top_p":0.7,
